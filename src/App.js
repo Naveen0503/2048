@@ -20,6 +20,7 @@ function App() {
   ]);
 
   const [gameOver, setGameOver] = useState(false);
+  const [score,setscore] = useState(0);
 
   const initialize = () => {
 
@@ -68,7 +69,7 @@ function App() {
     
     let oldGrid = data;
     let newArray = cloneDeep(data);
-
+    let totalScore = 0;
     for (let i = 0; i < 4; i++) {
       let b = newArray[i];
       let slow = 0;
@@ -92,13 +93,18 @@ function App() {
             b[slow] = b[slow] + b[fast];
             b[fast] = 0;
             fast = slow + 1;
+            totalScore += b[slow];
             slow++;
+            
           } else {
             slow++;
             fast = slow + 1;
           }
         }
       }
+    }
+    if (totalScore > 0) {
+      setscore(score + totalScore);
     }
     if (JSON.stringify(oldGrid) !== JSON.stringify(newArray)) {
       addNumber(newArray);
@@ -116,7 +122,7 @@ function App() {
     console.log("swipe right");
     let oldData = data;
     let newArray = cloneDeep(data);
-
+    let totalScore = 0;
     for (let i = 3; i >= 0; i--) {
       let b = newArray[i];
       let slow = b.length - 1;
@@ -140,13 +146,18 @@ function App() {
             b[slow] = b[slow] + b[fast];
             b[fast] = 0;
             fast = slow - 1;
+            totalScore += b[slow];
             slow--;
+           
           } else {
             slow--;
             fast = slow - 1;
           }
         }
       }
+    }
+    if (totalScore > 0) {
+      setscore(score + totalScore);
     }
     if (JSON.stringify(newArray) !== JSON.stringify(oldData)) {
       addNumber(newArray);
@@ -166,6 +177,8 @@ function App() {
     console.log(data);
     let b = cloneDeep(data);
     let oldData = JSON.parse(JSON.stringify(data));
+    let totalScore = 0;
+
     for (let i = 3; i >= 0; i--) {
       let slow = b.length - 1;
       let fast = slow - 1;
@@ -188,13 +201,18 @@ function App() {
             b[slow][i] = b[slow][i] + b[fast][i];
             b[fast][i] = 0;
             fast = slow - 1;
+            totalScore += b[slow][i];
             slow--;
+           
           } else {
             slow--;
             fast = slow - 1;
           }
         }
       }
+    }
+    if (totalScore > 0) {
+      setscore(score + totalScore);
     }
     if (JSON.stringify(b) !== JSON.stringify(oldData)) {
       addNumber(b);
@@ -213,6 +231,7 @@ function App() {
     console.log("swipe up");
     let b = cloneDeep(data);
     let oldData = JSON.parse(JSON.stringify(data));
+    let totalScore = 0;
     for (let i = 0; i < 4; i++) {
       let slow = 0;
       let fast = 1;
@@ -235,13 +254,18 @@ function App() {
             b[slow][i] = b[slow][i] + b[fast][i];
             b[fast][i] = 0;
             fast = slow + 1;
+            totalScore += b[slow][i];
             slow++;
+           
           } else {
             slow++;
             fast = slow + 1;
           }
         }
       }
+    }
+    if (totalScore > 0) {
+      setscore(score + totalScore);
     }
     if (JSON.stringify(oldData) !== JSON.stringify(b)) {
       addNumber(b);
@@ -288,7 +312,7 @@ function App() {
 
   let gameoverr = checkIfGameOver();
   if(gameoverr){
-  
+     localStorage.setItem("HighScore",localStorage.getItem("HighScore") > score ? localStorage.getItem("HighScore"): score)
     setGameOver(true);
   }
  }
@@ -326,6 +350,7 @@ function App() {
 };
 
 const resetGame = () => {
+  setscore(0);
   setGameOver(false);
   const emptyGrid = [
     [0, 0, 0, 0],
@@ -346,7 +371,15 @@ const resetGame = () => {
   useEvent("keydown",handleKeyDown);
 
   return(
-    <div className="App">
+    <div className="App" style={{
+      backgroundImage: `url(${process.env.PUBLIC_URL}/images/gif7.gif)`,
+      backgroundRepeat: "no-repeat",
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      height: "100vh",
+      display: "flex",
+      flexDirection: "column"
+  }}>
     <div
      style={{
       background : "#57407c",
@@ -356,6 +389,11 @@ const resetGame = () => {
       borderRadius : 5,
       marginTop : 10
      }}>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <div style={{ ...style.newGameButton, textAlign: "center" }}>Score <br></br> {score}</div>
+        <div style={{ ...style.newGameButton, textAlign: "center" }}>HighScore  {localStorage.getItem("HighScore")}</div>
+       
+    </div>
       {data.map((row,oneIndex)=>{
         return(
           <div style={{display : "flex"}} key={oneIndex}>
