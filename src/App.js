@@ -368,7 +368,8 @@ const resetGame = () => {
        
     </div>
     <br></br>
-    <div onClick={resetGame} style={style.newGameButton}>
+    <div onClick={resetGame} style={{...style.newGameButton ,
+      textAlign:"center"}}>
               {gameOver ? <> Try Again</> : <>NEW GAME </>}
             </div>
     </div>
