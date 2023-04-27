@@ -13,7 +13,11 @@ export const useEvent = (event, handler, passive = false) => {
 };
 
 
-export const getColors = (num) => {
+export const getColors = (num,gameoverrr) => {
+  if(gameoverrr) {
+    return `url("./images/game-over.gif")`
+  }
+  else {
     switch (num) {
       case 2:
         return `url("./images/2.gif")`;
@@ -40,5 +44,6 @@ export const getColors = (num) => {
       default:
         return "#3d2963";
     }
+  }
   };
   
