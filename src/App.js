@@ -372,7 +372,7 @@ const resetGame = () => {
 
   return(
     <div className="App" style={{
-      backgroundImage: `url(${process.env.PUBLIC_URL}/images/gif7.gif)`,
+      backgroundImage: `url(${process.env.PUBLIC_URL}/images/4.jpg)`,
       backgroundRepeat: "no-repeat",
       backgroundSize: "cover",
       backgroundPosition: "center",
